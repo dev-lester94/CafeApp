@@ -34,6 +34,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     //Get the count of number of fragments
+    //testing
     @Override
     public int getCount() {
         return fragments.size();
