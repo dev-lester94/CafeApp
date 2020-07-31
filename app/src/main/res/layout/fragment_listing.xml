@@ -3,15 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Listing">
+    tools:context=".Listing"
+    android:background="#4717b5">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello listing fragment"
-        />
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        >
 
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/emptyRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/searchImageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_search_24"
+            />
+
+
+        <TextView
+            android:id="@+id/textImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search a cafe and its nearby places"
+            android:textColor="@color/quantum_white_100"
+            android:layout_below="@+id/searchImageView"
+            android:textSize="16dp"
+            />
+    </LinearLayout>
 
 
 </FrameLayout>
