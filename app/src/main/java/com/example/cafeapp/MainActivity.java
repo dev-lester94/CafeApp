@@ -3,6 +3,8 @@ package com.example.cafeapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -49,27 +51,46 @@ public class MainActivity extends AppCompatActivity implements com.example.cafea
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
 
+    private boolean mTwoPane;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Set up the tabs and viewpager
-        viewPager = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
 
-        //Create the two fragments
-        map = new Map();
-        listing = new Listing();
+        if(findViewById(R.id.android_tablet_layout) != null){
+            mTwoPane = true;
 
-        //Add the fragments to the viewPagerAdapter and set the viewPager
-        //to the adapter
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
-        viewPagerAdapter.addFragment(map, "Map");
-        viewPagerAdapter.addFragment(listing, "Listing");
-        viewPager.setAdapter(viewPagerAdapter);
+            //Create the two fragments
+            map = new Map();
+            listing = new Listing();
+
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.map_container, map);
+            transaction.replace(R.id.listing_container, listing).commit();
+
+        }else {
+
+
+            //Set up the tabs and viewpager
+            viewPager = findViewById(R.id.view_pager);
+            tabLayout = findViewById(R.id.tab_layout);
+            tabLayout.setupWithViewPager(viewPager);
+
+            //Create the two fragments
+            map = new Map();
+            listing = new Listing();
+
+            //Add the fragments to the viewPagerAdapter and set the viewPager
+            //to the adapter
+            viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
+            viewPagerAdapter.addFragment(map, "Map");
+            viewPagerAdapter.addFragment(listing, "Listing");
+            viewPager.setAdapter(viewPagerAdapter);
+        }
 
         //Fetch the last location
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -146,7 +167,10 @@ public class MainActivity extends AppCompatActivity implements com.example.cafea
     @Override
     public void listingToMainActivitySent(LatLng latLng){
         //Log.i("mainactivity",input.toString());
-        viewPager.setCurrentItem(0);
+
+        if(mTwoPane == false) {
+            viewPager.setCurrentItem(0);
+        }
         map.listingCafeItemClick(latLng);
 
     }
